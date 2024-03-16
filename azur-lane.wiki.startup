@@ -1,0 +1,18 @@
+#
+# This version is used before certbot has had its fun.
+#
+server {
+	listen 80;
+	listen [::]:80;
+	server_name azur-lane.wiki www.azur-lane.wiki;
+	root /Library/WebServer/Sites/azur-lane.wiki/htdocs;
+	index index.shtml index.html;
+	try_files $uri /index.html;
+
+	error_log /Library/WebServer/Sites/azur-lane.wiki/nlogs/error.log error;
+	access_log /Library/WebServer/Sites/azur-lane.wiki/nlogs/access.log;
+
+	location / {
+		#proxy_pass  http://127.0.0.1:10001/;
+	}
+}

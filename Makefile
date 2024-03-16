@@ -4,6 +4,7 @@ help:
 	@echo These are helpful commands:
 	@echo
 	@echo "make nginx              Installs our nginx configuration."
+	@echo "make nginx-reload       Use once certbot is done. Replaces the azur-lane.wiki config file."
 	@echo "make up                 Launches Maria DB and MediaWiki"
 	@echo "make update             Runs the update.php script. Do once."
 	@echo "make down               Shuts down our containers."
@@ -14,9 +15,13 @@ help:
 nginx:
 	mkdir -p /Library/WebServer/Sites/azur-lane.wiki/htdocs
 	mkdir -p /Library/WebServer/Sites/azur-lane.wiki/nlogs
-	sudo cp azur-lane.wiki /etc/nginx/sites-available
-	sudo ln -s /etc/nginx/sites-available /etc/nginx/sites-enabled
+	sudo cp azur-lane.wiki.startup /etc/nginx/sites-available/azur-lane.wiki
+	sudo ln -s /etc/nginx/sites-available/azur-lane.wiki /etc/nginx/sites-enabled
 	sudo certbot certonly --nginx -d azur-lane.wiki -d www.azur-lane.wiki
+	sudo nginx -s reload
+
+nginx-ready:
+	sudo cp azur-lane.wiki /etc/nginx/sites-available/azur-lane.wiki
 	sudo nginx -s reload
 
 up:
