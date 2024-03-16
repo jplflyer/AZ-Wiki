@@ -12,11 +12,14 @@ help:
 	@echo "make attach-mariadb     Run bash inside the MariaDB container."
 	@echo "make clean              Do after a down to remove the lingering downed containers."
 
-nginx:
+nginx-init:
 	mkdir -p /Library/WebServer/Sites/azur-lane.wiki/htdocs
 	mkdir -p /Library/WebServer/Sites/azur-lane.wiki/nlogs
 	sudo cp azur-lane.wiki.startup /etc/nginx/sites-available/azur-lane.wiki
 	sudo ln -s /etc/nginx/sites-available/azur-lane.wiki /etc/nginx/sites-enabled
+	sudo nginx -s reload
+
+nginx-certbot:
 	sudo certbot certonly --nginx -d azur-lane.wiki -d www.azur-lane.wiki
 	sudo nginx -s reload
 
@@ -26,7 +29,7 @@ nginx-ready:
 
 up:
 	mkdir -p db
-	docker compose up -docker
+	docker compose up -d
 
 down:
 	docker compose down
@@ -41,4 +44,4 @@ attach-mariadb:
 	docker exec -it az-wiki-database-1 bash
 
 update:
-	docker exec az-wiki-mediawiki-1 'php maintenance/update.php'
+	docker exec -it az-wiki-mediawiki-1 php ./maintenance/update.php

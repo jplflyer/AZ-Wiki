@@ -4,6 +4,19 @@ will be directed to beginning and intermediate players. Advanced players already
 but I find it to be highly cryptic when explaining anything, and they don't let you sign up to be an editor.
 
 # Steps
+* Install certbot. I don't have all the directions, but add these:
+    * sudo add-apt-repository ppa:certbot/certbot
+    * sudo apt install python3-certbot-nginx
+
+* Install docker from the lengthy explanation here: https://docs.docker.com/engine/install/ubuntu/.
+
+    You have to do the post-install stuff or it won't work very well for you. Specifically:
+    * `sudo service docker start`
+    * `sudo groupadd docker`
+    * `sudo usermod -aG docker $USER`
+    * log out and back in
+    * `docker ps`
+
 * Register your domain and configure DNS
 * Download / move this repository somewhere useful.
 * Ensure make is installed. `sudo apt-get install build-essential`
