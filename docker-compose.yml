@@ -1,0 +1,36 @@
+# MediaWiki with MariaDB
+#
+# Access via "http://localhost:8080"
+#   (or "http://$(docker-machine ip):8080" if using docker-machine)
+version: '3'
+services:
+  mediawiki:
+    image: mediawiki
+    restart: always
+    ports:
+      - 10001:80
+    networks:
+      - azur_lane_net
+    links:
+      - database
+    volumes:
+      - ./images:/var/www/html/images
+      - ./LocalSettings.php:/var/www/html/LocalSettings.php
+
+  database:
+    image: mariadb
+    restart: always
+    networks:
+      - azur_lane_net
+    environment:
+      # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
+      MYSQL_DATABASE: azur_lane
+      MYSQL_USER: azur_lane
+      MYSQL_PASSWORD: ulrich_has_the_look
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    volumes:
+      - ./db:/var/lib/mysql
+
+networks:
+  azur_lane_net:
+    name: azur_lane_net
